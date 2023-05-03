@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 2100px;
+                 height: 2500px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 2100px;
+                 height: 2500px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "orange", "id": "glycogen phosphorylase", "label": "glycogen phosphorylase", "shape": "box"}, {"color": "orange", "id": "glucose-1-phosphate adenylyltransferase", "label": "glucose-1-phosphate adenylyltransferase", "shape": "box"}, {"color": "orange", "id": "tyrosinase", "label": "tyrosinase", "shape": "box"}, {"color": "orange", "id": "L-lactate dehydrogenase", "label": "L-lactate dehydrogenase", "shape": "box"}, {"color": "orange", "id": "6-phosphofructokinase", "label": "6-phosphofructokinase", "shape": "box"}, {"color": "orange", "id": "citrate synthase (unknown stereospecificity)", "label": "citrate synthase (unknown stereospecificity)", "shape": "box"}, {"color": "orange", "id": "phosphoenolpyruvate carboxylase", "label": "phosphoenolpyruvate carboxylase", "shape": "box"}, {"color": "orange", "id": "beta-glucosidase", "label": "beta-glucosidase", "shape": "box"}, {"color": "orange", "id": "glutamine synthetase", "label": "glutamine synthetase", "shape": "box"}, {"color": "orange", "id": "pyruvate kinase", "label": "pyruvate kinase", "shape": "box"}, {"color": "#97c2fc", "id": "hexanoic acid", "label": "hexanoic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "L-glutamate", "label": "L-glutamate", "shape": "dot"}, {"color": "#97c2fc", "id": "mannose", "label": "mannose", "shape": "dot"}, {"color": "#97c2fc", "id": "p-Cresol", "label": "p-Cresol", "shape": "dot"}, {"color": "#97c2fc", "id": "citrate", "label": "citrate", "shape": "dot"}, {"color": "#97c2fc", "id": "GTP", "label": "GTP", "shape": "dot"}, {"color": "#97c2fc", "id": "sucrose", "label": "sucrose", "shape": "dot"}, {"color": "#97c2fc", "id": "GDP", "label": "GDP", "shape": "dot"}, {"color": "#97c2fc", "id": "arginine phosphate", "label": "arginine phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "AMP", "label": "AMP", "shape": "dot"}, {"color": "#97c2fc", "id": "aspartate", "label": "aspartate", "shape": "dot"}, {"color": "#97c2fc", "id": "D-fructose", "label": "D-fructose", "shape": "dot"}, {"color": "#97c2fc", "id": "phenol", "label": "phenol", "shape": "dot"}, {"color": "#97c2fc", "id": "phosphoenol pyruvate", "label": "phosphoenol pyruvate", "shape": "dot"}, {"color": "#97c2fc", "id": "quercetin", "label": "quercetin", "shape": "dot"}, {"color": "#97c2fc", "id": "pyridoxal 5\u0027-phosphate", "label": "pyridoxal 5\u0027-phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "L-malate", "label": "L-malate", "shape": "dot"}, {"color": "#97c2fc", "id": "GSH", "label": "GSH", "shape": "dot"}, {"color": "#97c2fc", "id": "L-tyrosine", "label": "L-tyrosine", "shape": "dot"}, {"color": "#97c2fc", "id": "glyoxylate", "label": "glyoxylate", "shape": "dot"}, {"color": "#97c2fc", "id": "isocitrate", "label": "isocitrate", "shape": "dot"}, {"color": "#97c2fc", "id": "ethanol", "label": "ethanol", "shape": "dot"}, {"color": "#97c2fc", "id": "trehalose", "label": "trehalose", "shape": "dot"}, {"color": "#97c2fc", "id": "p-coumaric acid", "label": "p-coumaric acid", "shape": "dot"}, {"color": "#97c2fc", "id": "4-hydroxy-3-methoxybenzaldehyde", "label": "4-hydroxy-3-methoxybenzaldehyde", "shape": "dot"}, {"color": "#97c2fc", "id": "Urea", "label": "Urea", "shape": "dot"}, {"color": "#97c2fc", "id": "cysteine", "label": "cysteine", "shape": "dot"}, {"color": "#97c2fc", "id": "Pro", "label": "Pro", "shape": "dot"}, {"color": "#97c2fc", "id": "ADP-glucose", "label": "ADP-glucose", "shape": "dot"}, {"color": "#97c2fc", "id": "acetone", "label": "acetone", "shape": "dot"}, {"color": "#97c2fc", "id": "L-alanine", "label": "L-alanine", "shape": "dot"}, {"color": "#97c2fc", "id": "tagatose 1,6-diphosphate", "label": "tagatose 1,6-diphosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "serotonin", "label": "serotonin", "shape": "dot"}, {"color": "#97c2fc", "id": "Maleate", "label": "Maleate", "shape": "dot"}, {"color": "#97c2fc", "id": "ascorbic acid", "label": "ascorbic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "serine", "label": "serine", "shape": "dot"}, {"color": "#97c2fc", "id": "glyceraldehyde 3-phosphate", "label": "glyceraldehyde 3-phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "myo-inositol", "label": "myo-inositol", "shape": "dot"}, {"color": "#97c2fc", "id": "oxalic acid", "label": "oxalic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "fumarate", "label": "fumarate", "shape": "dot"}, {"color": "#97c2fc", "id": "cAMP", "label": "cAMP", "shape": "dot"}, {"color": "#97c2fc", "id": "2-propanol", "label": "2-propanol", "shape": "dot"}, {"color": "#97c2fc", "id": "3-phosphoglycerate", "label": "3-phosphoglycerate", "shape": "dot"}, {"color": "#97c2fc", "id": "L-histidine", "label": "L-histidine", "shape": "dot"}, {"color": "#97c2fc", "id": "D-glucose 1-phosphate", "label": "D-glucose 1-phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "L-glutamine", "label": "L-glutamine", "shape": "dot"}, {"color": "#97c2fc", "id": "L-valine", "label": "L-valine", "shape": "dot"}, {"color": "#97c2fc", "id": "glycine buffer", "label": "glycine buffer", "shape": "dot"}, {"color": "#97c2fc", "id": "D-glucono-1,5-lactone", "label": "D-glucono-1,5-lactone", "shape": "dot"}, {"color": "#97c2fc", "id": "uridine 5\u0027-diphosphoglucose", "label": "uridine 5\u0027-diphosphoglucose", "shape": "dot"}, {"color": "#97c2fc", "id": "2,3-diphosphoglycerate", "label": "2,3-diphosphoglycerate", "shape": "dot"}, {"color": "#97c2fc", "id": "propionyl-CoA", "label": "propionyl-CoA", "shape": "dot"}, {"color": "#97c2fc", "id": "L-methionine", "label": "L-methionine", "shape": "dot"}, {"color": "#97c2fc", "id": "oxaloacetate", "label": "oxaloacetate", "shape": "dot"}, {"color": "#97c2fc", "id": "NADPH", "label": "NADPH", "shape": "dot"}, {"color": "#97c2fc", "id": "NADH", "label": "NADH", "shape": "dot"}, {"color": "#97c2fc", "id": "acetate", "label": "acetate", "shape": "dot"}, {"color": "#97c2fc", "id": "alpha-ketoglutarate", "label": "alpha-ketoglutarate", "shape": "dot"}, {"color": "#97c2fc", "id": "gallic acid", "label": "gallic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "UTP", "label": "UTP", "shape": "dot"}, {"color": "#97c2fc", "id": "L-phenylalanine", "label": "L-phenylalanine", "shape": "dot"}, {"color": "#97c2fc", "id": "D-glucose 6-phosphate", "label": "D-glucose 6-phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "Carbamoyl phosphate", "label": "Carbamoyl phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "asparagine", "label": "asparagine", "shape": "dot"}, {"color": "#97c2fc", "id": "6-phosphogluconate", "label": "6-phosphogluconate", "shape": "dot"}, {"color": "#97c2fc", "id": "L-lactic acid", "label": "L-lactic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "succinyl coenzyme A", "label": "succinyl coenzyme A", "shape": "dot"}, {"color": "#97c2fc", "id": "phosphoenolpyruvate", "label": "phosphoenolpyruvate", "shape": "dot"}, {"color": "#97c2fc", "id": "NAD+", "label": "NAD+", "shape": "dot"}, {"color": "#97c2fc", "id": "dimethyl sulfoxide", "label": "dimethyl sulfoxide", "shape": "dot"}, {"color": "#97c2fc", "id": "ATP", "label": "ATP", "shape": "dot"}, {"color": "#97c2fc", "id": "p-hydroxybenzoic acid", "label": "p-hydroxybenzoic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "dihydroxyacetone phosphate", "label": "dihydroxyacetone phosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "ferulic acid", "label": "ferulic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "succinate", "label": "succinate", "shape": "dot"}, {"color": "#97c2fc", "id": "adenosine", "label": "adenosine", "shape": "dot"}, {"color": "#97c2fc", "id": "ADP", "label": "ADP", "shape": "dot"}, {"color": "#97c2fc", "id": "L-tryptophan", "label": "L-tryptophan", "shape": "dot"}, {"color": "#97c2fc", "id": "ITP", "label": "ITP", "shape": "dot"}, {"color": "#97c2fc", "id": "2-phosphoglyceric acid", "label": "2-phosphoglyceric acid", "shape": "dot"}, {"color": "#97c2fc", "id": "L-isoleucine", "label": "L-isoleucine", "shape": "dot"}, {"color": "#97c2fc", "id": "acetyl-CoA", "label": "acetyl-CoA", "shape": "dot"}, {"color": "#97c2fc", "id": "2-oxoglutarate", "label": "2-oxoglutarate", "shape": "dot"}, {"color": "#97c2fc", "id": "CTP", "label": "CTP", "shape": "dot"}, {"color": "#97c2fc", "id": "NADP+", "label": "NADP+", "shape": "dot"}, {"color": "#97c2fc", "id": "glucose", "label": "glucose", "shape": "dot"}, {"color": "#97c2fc", "id": "Pyruvic acid", "label": "Pyruvic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "indole-3-acetic acid", "label": "indole-3-acetic acid", "shape": "dot"}, {"color": "#97c2fc", "id": "D-fructose 1,6-bisphosphate", "label": "D-fructose 1,6-bisphosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "glycerol", "label": "glycerol", "shape": "dot"}, {"color": "#97c2fc", "id": "bicarbonate", "label": "bicarbonate", "shape": "dot"}, {"color": "#97c2fc", "id": "alpha-glycerophosphate", "label": "alpha-glycerophosphate", "shape": "dot"}, {"color": "#97c2fc", "id": "methanol", "label": "methanol", "shape": "dot"}, {"color": "#97c2fc", "id": "vanillic acid", "label": "vanillic acid", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"color": "green", "from": "2,3-diphosphoglycerate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "3-phosphoglycerate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "6-phosphogluconate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "ADP", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "ADP-glucose", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "alpha-glycerophosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "AMP", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "cysteine", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "D-fructose", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "D-fructose 1,6-bisphosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "D-glucose 6-phosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "dihydroxyacetone phosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "glyceraldehyde 3-phosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "GSH", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "NADP+", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "NADPH", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "oxaloacetate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "phosphoenolpyruvate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "pyridoxal 5\u0027-phosphate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "Pyruvic acid", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "sucrose", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "ATP", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "citrate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "cAMP", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "GTP", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "isocitrate", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "NAD+", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "red", "from": "uridine 5\u0027-diphosphoglucose", "to": "glucose-1-phosphate adenylyltransferase"}, {"color": "green", "from": "3-phosphoglycerate", "to": "pyruvate kinase"}, {"color": "green", "from": "6-phosphogluconate", "to": "pyruvate kinase"}, {"color": "green", "from": "L-alanine", "to": "pyruvate kinase"}, {"color": "green", "from": "AMP", "to": "pyruvate kinase"}, {"color": "green", "from": "asparagine", "to": "pyruvate kinase"}, {"color": "green", "from": "aspartate", "to": "pyruvate kinase"}, {"color": "green", "from": "ATP", "to": "pyruvate kinase"}, {"color": "green", "from": "cysteine", "to": "pyruvate kinase"}, {"color": "green", "from": "D-fructose 1,6-bisphosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "D-glucose 1-phosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "D-glucose 6-phosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "tagatose 1,6-diphosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "dihydroxyacetone phosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "L-glutamate", "to": "pyruvate kinase"}, {"color": "green", "from": "L-glutamine", "to": "pyruvate kinase"}, {"color": "green", "from": "glyceraldehyde 3-phosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "alpha-glycerophosphate", "to": "pyruvate kinase"}, {"color": "green", "from": "glycine buffer", "to": "pyruvate kinase"}, {"color": "green", "from": "GSH", "to": "pyruvate kinase"}, {"color": "green", "from": "L-isoleucine", "to": "pyruvate kinase"}, {"color": "green", "from": "serine", "to": "pyruvate kinase"}, {"color": "green", "from": "L-methionine", "to": "pyruvate kinase"}, {"color": "green", "from": "phosphoenolpyruvate", "to": "pyruvate kinase"}, {"color": "red", "from": "2,3-diphosphoglycerate", "to": "pyruvate kinase"}, {"color": "red", "from": "2-oxoglutarate", "to": "pyruvate kinase"}, {"color": "red", "from": "2-phosphoglyceric acid", "to": "pyruvate kinase"}, {"color": "red", "from": "adenosine", "to": "pyruvate kinase"}, {"color": "red", "from": "ADP", "to": "pyruvate kinase"}, {"color": "red", "from": "arginine phosphate", "to": "pyruvate kinase"}, {"color": "red", "from": "ascorbic acid", "to": "pyruvate kinase"}, {"color": "red", "from": "Carbamoyl phosphate", "to": "pyruvate kinase"}, {"color": "red", "from": "citrate", "to": "pyruvate kinase"}, {"color": "red", "from": "CTP", "to": "pyruvate kinase"}, {"color": "red", "from": "fumarate", "to": "pyruvate kinase"}, {"color": "red", "from": "GDP", "to": "pyruvate kinase"}, {"color": "red", "from": "glyoxylate", "to": "pyruvate kinase"}, {"color": "red", "from": "GTP", "to": "pyruvate kinase"}, {"color": "red", "from": "hexanoic acid", "to": "pyruvate kinase"}, {"color": "red", "from": "isocitrate", "to": "pyruvate kinase"}, {"color": "red", "from": "ITP", "to": "pyruvate kinase"}, {"color": "red", "from": "L-lactic acid", "to": "pyruvate kinase"}, {"color": "red", "from": "L-phenylalanine", "to": "pyruvate kinase"}, {"color": "red", "from": "Pro", "to": "pyruvate kinase"}, {"color": "red", "from": "L-tryptophan", "to": "pyruvate kinase"}, {"color": "red", "from": "L-valine", "to": "pyruvate kinase"}, {"color": "red", "from": "oxalic acid", "to": "pyruvate kinase"}, {"color": "red", "from": "oxaloacetate", "to": "pyruvate kinase"}, {"color": "red", "from": "pyridoxal 5\u0027-phosphate", "to": "pyruvate kinase"}, {"color": "red", "from": "Pyruvic acid", "to": "pyruvate kinase"}, {"color": "red", "from": "quercetin", "to": "pyruvate kinase"}, {"color": "red", "from": "L-tyrosine", "to": "pyruvate kinase"}, {"color": "red", "from": "Urea", "to": "pyruvate kinase"}, {"color": "red", "from": "UTP", "to": "pyruvate kinase"}, {"color": "green", "from": "2-propanol", "to": "beta-glucosidase"}, {"color": "green", "from": "p-hydroxybenzoic acid", "to": "beta-glucosidase"}, {"color": "green", "from": "acetone", "to": "beta-glucosidase"}, {"color": "green", "from": "cysteine", "to": "beta-glucosidase"}, {"color": "green", "from": "glucose", "to": "beta-glucosidase"}, {"color": "green", "from": "dimethyl sulfoxide", "to": "beta-glucosidase"}, {"color": "green", "from": "ethanol", "to": "beta-glucosidase"}, {"color": "green", "from": "glycerol", "to": "beta-glucosidase"}, {"color": "green", "from": "GSH", "to": "beta-glucosidase"}, {"color": "green", "from": "myo-inositol", "to": "beta-glucosidase"}, {"color": "green", "from": "methanol", "to": "beta-glucosidase"}, {"color": "green", "from": "p-coumaric acid", "to": "beta-glucosidase"}, {"color": "green", "from": "vanillic acid", "to": "beta-glucosidase"}, {"color": "green", "from": "4-hydroxy-3-methoxybenzaldehyde", "to": "beta-glucosidase"}, {"color": "red", "from": "D-glucono-1,5-lactone", "to": "beta-glucosidase"}, {"color": "red", "from": "D-fructose", "to": "beta-glucosidase"}, {"color": "red", "from": "mannose", "to": "beta-glucosidase"}, {"color": "red", "from": "ferulic acid", "to": "beta-glucosidase"}, {"color": "red", "from": "fumarate", "to": "beta-glucosidase"}, {"color": "red", "from": "gallic acid", "to": "beta-glucosidase"}, {"color": "red", "from": "indole-3-acetic acid", "to": "beta-glucosidase"}, {"color": "red", "from": "ascorbic acid", "to": "beta-glucosidase"}, {"color": "red", "from": "phenol", "to": "beta-glucosidase"}, {"color": "red", "from": "sucrose", "to": "beta-glucosidase"}, {"color": "red", "from": "Urea", "to": "beta-glucosidase"}, {"color": "green", "from": "ADP", "to": "6-phosphofructokinase"}, {"color": "green", "from": "AMP", "to": "6-phosphofructokinase"}, {"color": "green", "from": "cAMP", "to": "6-phosphofructokinase"}, {"color": "green", "from": "citrate", "to": "6-phosphofructokinase"}, {"color": "green", "from": "D-fructose 1,6-bisphosphate", "to": "6-phosphofructokinase"}, {"color": "green", "from": "D-glucose 6-phosphate", "to": "6-phosphofructokinase"}, {"color": "green", "from": "dimethyl sulfoxide", "to": "6-phosphofructokinase"}, {"color": "green", "from": "GDP", "to": "6-phosphofructokinase"}, {"color": "green", "from": "GSH", "to": "6-phosphofructokinase"}, {"color": "green", "from": "glycerol", "to": "6-phosphofructokinase"}, {"color": "green", "from": "bicarbonate", "to": "6-phosphofructokinase"}, {"color": "green", "from": "phosphoenol pyruvate", "to": "6-phosphofructokinase"}, {"color": "green", "from": "serotonin", "to": "6-phosphofructokinase"}, {"color": "green", "from": "trehalose", "to": "6-phosphofructokinase"}, {"color": "red", "from": "2,3-diphosphoglycerate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "2-oxoglutarate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "2-phosphoglyceric acid", "to": "6-phosphofructokinase"}, {"color": "red", "from": "3-phosphoglycerate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "arginine phosphate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "ascorbic acid", "to": "6-phosphofructokinase"}, {"color": "red", "from": "ATP", "to": "6-phosphofructokinase"}, {"color": "red", "from": "CTP", "to": "6-phosphofructokinase"}, {"color": "red", "from": "GTP", "to": "6-phosphofructokinase"}, {"color": "red", "from": "isocitrate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "phosphoenolpyruvate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "pyridoxal 5\u0027-phosphate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "succinate", "to": "6-phosphofructokinase"}, {"color": "red", "from": "UTP", "to": "6-phosphofructokinase"}, {"color": "green", "from": "2-propanol", "to": "tyrosinase"}, {"color": "green", "from": "ascorbic acid", "to": "tyrosinase"}, {"color": "green", "from": "dimethyl sulfoxide", "to": "tyrosinase"}, {"color": "green", "from": "ethanol", "to": "tyrosinase"}, {"color": "green", "from": "ferulic acid", "to": "tyrosinase"}, {"color": "green", "from": "gallic acid", "to": "tyrosinase"}, {"color": "green", "from": "methanol", "to": "tyrosinase"}, {"color": "red", "from": "p-coumaric acid", "to": "tyrosinase"}, {"color": "red", "from": "2-oxoglutarate", "to": "tyrosinase"}, {"color": "red", "from": "serotonin", "to": "tyrosinase"}, {"color": "red", "from": "p-hydroxybenzoic acid", "to": "tyrosinase"}, {"color": "red", "from": "acetone", "to": "tyrosinase"}, {"color": "red", "from": "citrate", "to": "tyrosinase"}, {"color": "red", "from": "cysteine", "to": "tyrosinase"}, {"color": "red", "from": "L-glutamate", "to": "tyrosinase"}, {"color": "red", "from": "GSH", "to": "tyrosinase"}, {"color": "red", "from": "glycine buffer", "to": "tyrosinase"}, {"color": "red", "from": "hexanoic acid", "to": "tyrosinase"}, {"color": "red", "from": "L-histidine", "to": "tyrosinase"}, {"color": "red", "from": "L-phenylalanine", "to": "tyrosinase"}, {"color": "red", "from": "L-tyrosine", "to": "tyrosinase"}, {"color": "red", "from": "oxalic acid", "to": "tyrosinase"}, {"color": "red", "from": "p-Cresol", "to": "tyrosinase"}, {"color": "red", "from": "quercetin", "to": "tyrosinase"}, {"color": "red", "from": "succinate", "to": "tyrosinase"}, {"color": "red", "from": "Urea", "to": "tyrosinase"}, {"color": "red", "from": "4-hydroxy-3-methoxybenzaldehyde", "to": "tyrosinase"}, {"color": "green", "from": "3-phosphoglycerate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "acetyl-CoA", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "alpha-glycerophosphate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "D-fructose 1,6-bisphosphate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "D-glucose 1-phosphate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "D-glucose 6-phosphate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "dihydroxyacetone phosphate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "ethanol", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "L-glutamine", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "L-glutamate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "glycine buffer", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "glycerol", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "GTP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "L-histidine", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "phosphoenolpyruvate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "propionyl-CoA", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "Pyruvic acid", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "succinate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "succinyl coenzyme A", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "L-malate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "2-oxoglutarate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "2-phosphoglyceric acid", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "ADP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "alpha-ketoglutarate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "AMP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "aspartate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "ATP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "citrate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "CTP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "cysteine", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "D-fructose", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "isocitrate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "fumarate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "GDP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "glyoxylate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "L-lactic acid", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "Maleate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "oxalic acid", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "oxaloacetate", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "quercetin", "to": "phosphoenolpyruvate carboxylase"}, {"color": "red", "from": "UTP", "to": "phosphoenolpyruvate carboxylase"}, {"color": "green", "from": "AMP", "to": "glycogen phosphorylase"}, {"color": "green", "from": "ADP", "to": "glycogen phosphorylase"}, {"color": "green", "from": "ADP-glucose", "to": "glycogen phosphorylase"}, {"color": "green", "from": "ATP", "to": "glycogen phosphorylase"}, {"color": "green", "from": "cAMP", "to": "glycogen phosphorylase"}, {"color": "green", "from": "cysteine", "to": "glycogen phosphorylase"}, {"color": "green", "from": "dimethyl sulfoxide", "to": "glycogen phosphorylase"}, {"color": "green", "from": "ethanol", "to": "glycogen phosphorylase"}, {"color": "green", "from": "fumarate", "to": "glycogen phosphorylase"}, {"color": "green", "from": "D-glucose 1-phosphate", "to": "glycogen phosphorylase"}, {"color": "green", "from": "GSH", "to": "glycogen phosphorylase"}, {"color": "green", "from": "indole-3-acetic acid", "to": "glycogen phosphorylase"}, {"color": "green", "from": "Maleate", "to": "glycogen phosphorylase"}, {"color": "green", "from": "Pyruvic acid", "to": "glycogen phosphorylase"}, {"color": "green", "from": "UTP", "to": "glycogen phosphorylase"}, {"color": "red", "from": "D-glucono-1,5-lactone", "to": "glycogen phosphorylase"}, {"color": "red", "from": "2,3-diphosphoglycerate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "p-Cresol", "to": "glycogen phosphorylase"}, {"color": "red", "from": "vanillic acid", "to": "glycogen phosphorylase"}, {"color": "red", "from": "acetate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "CTP", "to": "glycogen phosphorylase"}, {"color": "red", "from": "glucose", "to": "glycogen phosphorylase"}, {"color": "red", "from": "D-glucose 6-phosphate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "D-fructose 1,6-bisphosphate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "gallic acid", "to": "glycogen phosphorylase"}, {"color": "red", "from": "GDP", "to": "glycogen phosphorylase"}, {"color": "red", "from": "GTP", "to": "glycogen phosphorylase"}, {"color": "red", "from": "bicarbonate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "L-tyrosine", "to": "glycogen phosphorylase"}, {"color": "red", "from": "mannose", "to": "glycogen phosphorylase"}, {"color": "red", "from": "NADPH", "to": "glycogen phosphorylase"}, {"color": "red", "from": "phenol", "to": "glycogen phosphorylase"}, {"color": "red", "from": "phosphoenol pyruvate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "phosphoenolpyruvate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "Pro", "to": "glycogen phosphorylase"}, {"color": "red", "from": "pyridoxal 5\u0027-phosphate", "to": "glycogen phosphorylase"}, {"color": "red", "from": "quercetin", "to": "glycogen phosphorylase"}, {"color": "red", "from": "trehalose", "to": "glycogen phosphorylase"}, {"color": "red", "from": "uridine 5\u0027-diphosphoglucose", "to": "glycogen phosphorylase"}, {"color": "green", "from": "2-oxoglutarate", "to": "glutamine synthetase"}, {"color": "green", "from": "alpha-ketoglutarate", "to": "glutamine synthetase"}, {"color": "green", "from": "cysteine", "to": "glutamine synthetase"}, {"color": "green", "from": "L-glutamate", "to": "glutamine synthetase"}, {"color": "green", "from": "myo-inositol", "to": "glutamine synthetase"}, {"color": "green", "from": "Pro", "to": "glutamine synthetase"}, {"color": "red", "from": "adenosine", "to": "glutamine synthetase"}, {"color": "red", "from": "ADP", "to": "glutamine synthetase"}, {"color": "red", "from": "L-alanine", "to": "glutamine synthetase"}, {"color": "red", "from": "AMP", "to": "glutamine synthetase"}, {"color": "red", "from": "ascorbic acid", "to": "glutamine synthetase"}, {"color": "red", "from": "asparagine", "to": "glutamine synthetase"}, {"color": "red", "from": "aspartate", "to": "glutamine synthetase"}, {"color": "red", "from": "ATP", "to": "glutamine synthetase"}, {"color": "red", "from": "Carbamoyl phosphate", "to": "glutamine synthetase"}, {"color": "red", "from": "CTP", "to": "glutamine synthetase"}, {"color": "red", "from": "dimethyl sulfoxide", "to": "glutamine synthetase"}, {"color": "red", "from": "GDP", "to": "glutamine synthetase"}, {"color": "red", "from": "L-glutamine", "to": "glutamine synthetase"}, {"color": "red", "from": "glycine buffer", "to": "glutamine synthetase"}, {"color": "red", "from": "L-histidine", "to": "glutamine synthetase"}, {"color": "red", "from": "ITP", "to": "glutamine synthetase"}, {"color": "red", "from": "L-isoleucine", "to": "glutamine synthetase"}, {"color": "red", "from": "L-methionine", "to": "glutamine synthetase"}, {"color": "red", "from": "serine", "to": "glutamine synthetase"}, {"color": "red", "from": "L-tyrosine", "to": "glutamine synthetase"}, {"color": "red", "from": "L-tryptophan", "to": "glutamine synthetase"}, {"color": "red", "from": "Urea", "to": "glutamine synthetase"}, {"color": "red", "from": "UTP", "to": "glutamine synthetase"}, {"color": "red", "from": "L-valine", "to": "glutamine synthetase"}, {"color": "green", "from": "3-phosphoglycerate", "to": "L-lactate dehydrogenase"}, {"color": "green", "from": "ADP", "to": "L-lactate dehydrogenase"}, {"color": "green", "from": "D-fructose 1,6-bisphosphate", "to": "L-lactate dehydrogenase"}, {"color": "green", "from": "tagatose 1,6-diphosphate", "to": "L-lactate dehydrogenase"}, {"color": "green", "from": "Urea", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "6-phosphogluconate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "L-alanine", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "AMP", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "ascorbic acid", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "ATP", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "citrate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "dihydroxyacetone phosphate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "D-glucose 6-phosphate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "L-glutamate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "glycine buffer", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "GTP", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "isocitrate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "L-lactic acid", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "NAD+", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "NADH", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "NADPH", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "oxalic acid", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "oxaloacetate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "phosphoenolpyruvate", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "Pyruvic acid", "to": "L-lactate dehydrogenase"}, {"color": "red", "from": "serine", "to": "L-lactate dehydrogenase"}, {"color": "green", "from": "acetate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "green", "from": "alpha-ketoglutarate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "green", "from": "AMP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "green", "from": "Urea", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "2-oxoglutarate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "acetyl-CoA", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "ADP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "ATP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "cAMP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "citrate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "CTP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "GTP", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "L-malate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "NAD+", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "NADH", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "NADP+", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "NADPH", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "oxaloacetate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "phosphoenolpyruvate", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "propionyl-CoA", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "succinyl coenzyme A", "to": "citrate synthase (unknown stereospecificity)"}, {"color": "red", "from": "UTP", "to": "citrate synthase (unknown stereospecificity)"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
