@@ -26,4 +26,4 @@ An overview of the contents is given in the table below.
 |  8  |                   Scripts for   creating and annotating phylogenetic tree | analysis\data_analysis\phylogenetic_tree             |
 |  9  |                                   Script for   analysing interaction data | analysis\data_analysis\BRENDA_analysis.ipynb         |
 |  10 |                                        HTML file of   interactive network | analysis\data_analysis\network.html                  |
-|  11 |         Script for   conducting enrichment analysis and assessing results | analysis\enrichment_analysis                         |
+|  11 |         Scripts for   conducting enrichment analysis and assessing results | analysis\enrichment_analysis                         |
